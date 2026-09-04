@@ -1,26 +1,29 @@
-//recursive approch 
+//recursive approch wih out map
 class Solution {
 
-    private void recurPermute(int[]nums,List<Integer>ds,List<List<Integer>>ans,boolean[] freq){
-        if(ds.size()==nums.length){//ds=n[arr size]
-            ans.add(new ArrayList<>(ds));//one of permutation
+    private void recurPermute(int index,int[]nums,List<List<Integer>>ans){
+        if(index==nums.length){
+            List<Integer>ds=new ArrayList<>();//create ds
+            for(int i=0;i<nums.length; i++){
+                ds.add(nums[i]);//copy nums to sds
+            }//idx means which pos we are tring to fix
+            ans.add(new ArrayList<>(ds));//add lidt in ds
             return;
         }
-        for(int i=0;i<nums.length;i++){
-            if(!freq[i]){//if it is not m arked then add
-                freq[i]=true;
-                ds.add(nums[i]);//add in ds
-                recurPermute(nums,ds,ans,freq);//build remaining
-                ds.remove(ds.size()-1);//now remove and marked false ;;back track
-                freq[i]=false;
-            }
+        for(int i=index;i<nums.length;i++){//swap till ind to n-1
+            swap(i,index,nums);//put slct iteam to curr idx
+            recurPermute(index+1,nums,ans);//back track sec ond choice ;;;recursive callll
+            swap(i,index,nums);//reswap
         }
+    }
+     private void swap(int i, int j, int[] nums) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>>ans=new ArrayList<>();
-        List<Integer>ds=new ArrayList<>();//cur permutation ds
-        boolean freq[]=new boolean[nums.length];//freq arr similar size given arr initilly false h
-        recurPermute(nums,ds,ans,freq);//recc srt
+        recurPermute(0,nums,ans);//recc srt from 0 
         return ans;
     }
 }
