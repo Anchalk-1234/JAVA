@@ -8,25 +8,18 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
-        if (head == null) {
-            return null;
-        }
-        ListNode prev = head;//last unique node ko point karta h
-        ListNode temp = prev.next;//hageh node ko check krta h
-
-        while (temp != null) {
-            if (temp.val == prev.val) {
-                temp = temp.next;
-                continue;//duplicate hai to continye kiya
+        ListNode curr = head;
+        while (curr != null && curr.next != null) {
+            if (curr.val == curr.next.val) {
+                curr.next = curr.next.next;//ager dono ki value same hai toh duplicate node skip
+            } else {
+                curr = curr.next;//dif hai to curr next p move
             }
-            prev.next = temp;//ager value diff hai to preq ko unique s connect kro
-            prev = temp;//last uniqye  node bnagya y
-            temp = temp.next;//next nodemoo checlk
         }
 
-        prev.next = null;
-        return head;
+        return head;//modified list
     }
 }
